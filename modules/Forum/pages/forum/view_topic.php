@@ -256,7 +256,13 @@ if(Input::exists()) {
 				if(count($users_following)){
 					foreach($users_following as $user_following){
 						if($user_following->user_id != $user->data()->id && $user_following->existing_alerts == 0){
-							Alert::create($user_following->user_id, 'new_reply', str_replace(array('{x}', '{y}'), array(Output::getClean($user->data()->nickname), Output::getClean($topic->topic_title)), $forum_language->get('forum', 'new_reply_in_topic')), str_replace(array('{x}', '{y}'), array(Output::getClean($user->data()->nickname), Output::getClean($topic->topic_title)), $forum_language->get('forum', 'new_reply_in_topic')), URL::build('/forum/topic/' . $tid . '-' . $forum->titleToURL($topic->topic_title), 'pid=' . $last_post_id));
+							Alert::create(
+								$user_following->user_id,
+								'new_reply',
+								array('path' => ROOT_PATH . '/modules/Forum/language', 'file' => 'forum', 'term' => 'new_reply_in_topic', 'replace' => array('{x}', '{y}'), 'replace_with' => array(Output::getClean($user->data()->nickname), Output::getClean($topic->topic_title))),
+								array('path' => ROOT_PATH . '/modules/Forum/language', 'file' => 'forum', 'term' => 'new_reply_in_topic', 'replace' => array('{x}', '{y}'), 'replace_with' => array(Output::getClean($user->data()->nickname), Output::getClean($topic->topic_title))),
+								URL::build('/forum/topic/' . $tid . '-' . $forum->titleToURL($topic->topic_title), 'pid=' . $last_post_id)
+							);
 							$queries->update('topics_following', $user_following->id, array(
 								'existing_alerts' => 1
 							));
@@ -309,16 +315,14 @@ if($user->isLoggedIn() || Cookie::exists('alert-box')){
 
 $template->addCSSFiles(array(
 	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/spoiler/css/spoiler.css' => array(),
+	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/prism/prism.css' => array(),
+	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/tinymce/plugins/spoiler/css/spoiler.css' => array(),
 	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/emoji/css/emojione.min.css' => array(),
 	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/emojionearea/css/emojionearea.min.css' => array()
 ));
 
 if($user->isLoggedIn())
 	$template->addJSScript('var quotedPosts = [];');
-
-// Load navbar
-require(ROOT_PATH . '/core/templates/navbar.php');
-require(ROOT_PATH . '/core/templates/footer.php');
 
 // Are reactions enabled?
 $reactions_enabled = $queries->getWhere('settings', array('name', '=', 'forum_reactions'));
@@ -565,7 +569,7 @@ for($n = 0; $n < count($results->data); $n++){
 	}
 
 	// Purify post content
-	$content = htmlspecialchars_decode($results->data[$n]->post_content);
+	$content = Util::replaceAnchorsWithText(Output::getDecoded($results->data[$n]->post_content));
 	$content = $emojione->unicodeToImage($content);
 	$content = Output::getPurified($content);
 
@@ -666,7 +670,8 @@ $smarty->assign(array(
 	'BY' => ucfirst($forum_language->get('forum', 'by')),
 	'CANCEL' => $language->get('general', 'cancel'),
 	'USER_ID' => (($user->isLoggedIn()) ? $user->data()->id  : 0),
-	'INSERT_QUOTES' => $forum_language->get('forum', 'insert_quotes')
+	'INSERT_QUOTES' => $forum_language->get('forum', 'insert_quotes'),
+	'FORUM_TITLE' => Output::getClean($forum_parent[0]->forum_title)
 ));
 
 // Get post formatting type (HTML or Markdown)
@@ -679,7 +684,6 @@ if($formatting == 'markdown'){
 	$smarty->assign('MARKDOWN_HELP', $language->get('general', 'markdown_help'));
 
 	$template->addJSFiles(array(
-		(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/emoji/js/emojione.min.js' => array(),
 		(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/emojionearea/js/emojionearea.min.js' => array()
 	));
 
@@ -692,14 +696,14 @@ if($formatting == 'markdown'){
 	');
 } else {
 	$template->addJSFiles(array(
-		(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/emoji/js/emojione.min.js' => array(),
 		(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/spoiler/js/spoiler.js' => array(),
-		(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/ckeditor.js' => array(),
-		(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/emojione/dialogs/emojione.json' => array()
+		(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/prism/prism.js' => array(),
+		(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/tinymce/plugins/spoiler/js/spoiler.js' => array(),
+		(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/tinymce/tinymce.min.js' => array()
 	));
 
 	if($user->isLoggedIn())
-		$template->addJSScript(Input::createEditor('quickreply'));
+		$template->addJSScript(Input::createTinyEditor($language, 'quickreply'));
 }
 
 if($user->isLoggedIn()){
@@ -710,7 +714,7 @@ if($user->isLoggedIn()){
 		';
 	} else {
 		$js = '
-		CKEDITOR.instances.quickreply.insertHtml(\'<blockquote class="blockquote"><a href="\' + resultData[item].link + \'">\' + resultData[item].author_nickname + \':</a><br />\' + resultData[item].content + \'</blockquote><br />\');
+		tinymce.editors[0].execCommand(\'mceInsertContent\', false, \'<blockquote class="blockquote"><a href="\' + resultData[item].link + \'">\' + resultData[item].author_nickname + \':</a><br />\' + resultData[item].content + \'</blockquote><br />\');
 		';
 	}
 

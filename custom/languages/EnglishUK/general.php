@@ -61,6 +61,7 @@ $language = array(
 	'success' => 'Success',
 	'error' => 'Error',
 	'are_you_sure' => 'Are you sure?',
+	'spoiler' => 'Spoiler',
 
 	/*
 	 *  Contact form
@@ -119,6 +120,12 @@ $language = array(
     /*
      *  Widgets
      */
+    'statistics' => 'Statistics',
+    'users_registered' => 'Users Registered',
+    'latest_member' => 'Latest Member',
+    'forum_statistics' => 'Forum Statistics',
+    'total_threads' => 'Total Threads',
+    'total_posts' => 'Total Posts',
     'online_staff' => 'Online Staff',
     'no_online_staff' => 'There are no staff members online.',
     'online_users' => 'Online Users',

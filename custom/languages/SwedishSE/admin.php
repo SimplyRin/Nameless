@@ -332,6 +332,12 @@ $language = array(
 	'delete' => 'Radera',
 	'template_deleted_successfully' => 'Mallen har tagits bort!',
 	'background_image_x' => 'Background image: <strong>{x}</strong>', // Don't replace {x}
+	'banner_image_x' => 'Banner image: <strong>{x}</strong>', // Don't replace {x}
+	'background_directory_not_writable' => 'The <strong>uploads/backgrounds</strong> directory is not writable!',
+	'template_banners_directory_not_writable' => 'The <strong>uploads/template_banners</strong> directory is not writable!',
+	'template_banner_reset_successfully' => 'Banner reset successfully.',
+	'template_banner_updated_successfully' => 'Banner updated successfully.',
+	'reset_banner' => 'Reset Banner',
 	'find_templates' => 'Find Templates',
 	'view_all_templates' => 'View all templates',
 	'unable_to_retrieve_templates' => 'Unable to retrieve templates',
@@ -466,6 +472,7 @@ $language = array(
 
     // Online users widget
     'include_staff_in_user_widget' => 'Include staff members in user widget?',
+    'show_nickname_instead_of_username' => 'Show user\'s nickname instead of username?',
 
     // Custom Pages
     'pages' => 'Sidor',

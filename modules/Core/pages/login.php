@@ -266,8 +266,12 @@ if (Input::exists()) {
 // Generate content
 if($method == 'email')
 	$smarty->assign('EMAIL', $language->get('user', 'email'));
-else
-	$smarty->assign('USERNAME', (defined('MINECRAFT') && MINECRAFT && ($custom_usernames == 'false') ? $language->get('user', 'minecraft_username') : $language->get('user', 'username')));
+else {
+	if(MINECRAFT)
+		$smarty->assign('USERNAME', $language->get('user', 'minecraft_username'));
+	else
+		$smarty->assign('USERNAME', $language->get('user', 'username'));
+}
 
 $smarty->assign(array(
 	'USERNAME_INPUT' => ($method == 'email' ? Output::getClean(Input::get('email')) : Output::getClean(Input::get('username'))),
@@ -275,7 +279,7 @@ $smarty->assign(array(
 	'REMEMBER_ME' => $language->get('user', 'remember_me'),
 	'FORGOT_PASSWORD_URL' => URL::build('/forgot_password'),
 	'FORGOT_PASSWORD' => $language->get('user', 'forgot_password'),
-	'FORM_TOKEN' => Token::generate(),
+	'FORM_TOKEN' => Token::get(),
 	'SIGN_IN' => $language->get('general', 'sign_in'),
 	'REGISTER_URL' => URL::build('/register'),
 	'REGISTER' => $language->get('general', 'register'),

@@ -69,6 +69,7 @@ $language = array(
 	'success' => 'Erfolgreich',
 	'error' => 'Fehler',
 	'are_you_sure' => 'Bist du sicher?',
+	'spoiler' => 'Spoiler',
 
     /*
      *  Contact form
@@ -128,6 +129,12 @@ $language = array(
     /*
      *  Widgets
      */
+    'statistics' => 'Statistics',
+    'users_registered' => 'Users Registered',
+    'latest_member' => 'Latest Member',
+    'forum_statistics' => 'Forum Statistics',
+    'total_threads' => 'Total Threads',
+    'total_posts' => 'Total Posts',
     'online_staff' => 'Aktivere Teammitglieder',
     'no_online_staff' => 'Derzeit sind keine Teammitglieder online',
     'online_users' => 'Aktive User',

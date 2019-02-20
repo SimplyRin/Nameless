@@ -172,10 +172,8 @@ class Default_Panel_Template extends TemplateBase {
 
 					$this->addJSFiles(array(
 						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/switchery/switchery.min.js' => array(),
-						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/emoji/js/emojione.min.js' => array(),
 						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/spoiler/js/spoiler.js' => array(),
-						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/ckeditor.js' => array(),
-						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/emojione/dialogs/emojione.json' => array()
+						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/ckeditor.js' => array()
 					));
 
 					$this->addJSScript(Input::createEditor('InputMaintenanceMessage'));
@@ -191,10 +189,8 @@ class Default_Panel_Template extends TemplateBase {
 
 				case 'privacy_and_terms':
 					$this->addJSFiles(array(
-						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/emoji/js/emojione.min.js' => array(),
 						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/spoiler/js/spoiler.js' => array(),
-						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/ckeditor.js' => array(),
-						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/emojione/dialogs/emojione.json' => array()
+						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/ckeditor.js' => array()
 					));
 
 					$this->addJSScript(Input::createEditor('InputPrivacy'));
@@ -211,10 +207,8 @@ class Default_Panel_Template extends TemplateBase {
 					));
 
 					$this->addJSFiles(array(
-						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/emoji/js/emojione.min.js' => array(),
 						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/spoiler/js/spoiler.js' => array(),
-						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/ckeditor.js' => array(),
-						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/emojione/dialogs/emojione.json' => array()
+						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/ckeditor.js' => array()
 					));
 
 					$this->addJSScript(Input::createEditor('InputRegistrationDisabledMessage'));
@@ -283,10 +277,8 @@ class Default_Panel_Template extends TemplateBase {
 
 						$this->addJSFiles(array(
 							(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/switchery/switchery.min.js' => array(),
-							(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/emoji/js/emojione.min.js' => array(),
 							(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/spoiler/js/spoiler.js' => array(),
-							(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/ckeditor.js' => array(),
-							(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/emojione/dialogs/emojione.json' => array()
+							(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/ckeditor.js' => array()
 						));
 
 						$this->addJSScript(Input::createEditor('inputContent', true));
@@ -551,7 +543,24 @@ class Default_Panel_Template extends TemplateBase {
 
 					$this->addJSScript('
 					// Dropzone options
-					Dropzone.options.upload_avatar_dropzone = {
+					Dropzone.options.upload_background_dropzone = {
+					    maxFilesize: 2,
+					    dictDefaultMessage: "' . $this->_language->get('admin', 'drag_files_here') . '",
+					    dictInvalidFileType: "' . $this->_language->get('admin', 'invalid_file_type') . '",
+					    dictFileTooBig: "' . $this->_language->get('admin', 'file_too_big') . '",
+				        error: function(file, response) {
+				            console.log("ERROR");
+				            console.log(file);
+				            console.log(response);
+				        },
+				        success: function(file, response){
+				            console.log("ACCEPTED");
+				            console.log(file);
+				            console.log(response);
+				        }
+					};
+					
+					Dropzone.options.upload_banner_dropzone = {
 					    maxFilesize: 2,
 					    dictDefaultMessage: "' . $this->_language->get('admin', 'drag_files_here') . '",
 					    dictInvalidFileType: "' . $this->_language->get('admin', 'invalid_file_type') . '",
@@ -573,6 +582,21 @@ class Default_Panel_Template extends TemplateBase {
 					break;
 
 				case 'forums':
+					if(isset($_GET['forum'])){
+						$this->addCSSFiles(array(
+							(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/switchery/switchery.min.css' => array(),
+							(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/spoiler/css/spoiler.css' => array(),
+						));
+
+						$this->addJSFiles(array(
+							(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/switchery/switchery.min.js' => array(),
+							(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/spoiler/js/spoiler.js' => array(),
+							(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/ckeditor.js' => array()
+						));
+
+						$this->addJSScript(Input::createEditor('InputPlaceholder', true));
+					}
+
 					$this->addCSSFiles(array(
 						(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/switchery/switchery.min.css' => array()
 					));

@@ -329,6 +329,12 @@ $language = array(
 	'delete' => 'Ištrinti',
 	'template_deleted_successfully' => 'Šablonas sėkmingai ištrintas.',
 	'background_image_x' => 'Fono vaizdas: <strong>{x}</strong>', // Don't replace {x}
+	'banner_image_x' => 'Banner image: <strong>{x}</strong>', // Don't replace {x}
+	'background_directory_not_writable' => 'The <strong>uploads/backgrounds</strong> directory is not writable!',
+	'template_banners_directory_not_writable' => 'The <strong>uploads/template_banners</strong> directory is not writable!',
+	'template_banner_reset_successfully' => 'Banner reset successfully.',
+	'template_banner_updated_successfully' => 'Banner updated successfully.',
+	'reset_banner' => 'Reset Banner',
 	'find_templates' => 'Rasti šablonus',
 	'view_all_templates' => 'Peržiūrėti visus šablonus',
 	'unable_to_retrieve_templates' => 'Nepavyko gauti šablonų',
@@ -461,8 +467,9 @@ $language = array(
 	'module_x' => 'Modulis: {x}', // Don't replace {x}
 	'widget_order' => 'Valdiklių Tvarka',
 
-  // Online users widget
-  'include_staff_in_user_widget' => 'Įtraukti darbuotojus į naudotojo valdiklį?',
+	// Online users widget
+	'include_staff_in_user_widget' => 'Įtraukti darbuotojus į naudotojo valdiklį?',
+	'show_nickname_instead_of_username' => 'Rodyti naudotojo slapyvardį vietoj naudotojo vardo?',
 
   // Custom Pages
   'pages' => 'Puslapiai',

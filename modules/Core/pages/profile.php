@@ -38,11 +38,15 @@ require_once(ROOT_PATH . '/core/templates/frontend_init.php');
 
 $template->addCSSFiles(array(
 	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/spoiler/css/spoiler.css' => array(),
-	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/image-picker/image-picker.css' => array()
+	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/image-picker/image-picker.css' => array(),
+	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/prism/prism.css' => array(),
+	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/tinymce/plugins/spoiler/css/spoiler.css' => array()
 ));
 
 $template->addJSFiles(array(
-	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/spoiler/js/spoiler.js' => array()
+	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/ckeditor/plugins/spoiler/js/spoiler.js' => array(),
+	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/prism/prism.js' => array(),
+	(defined('CONFIG_PATH') ? CONFIG_PATH : '') . '/core/assets/plugins/tinymce/plugins/spoiler/js/spoiler.js' => array()
 ));
 
 $template->addCSSStyle('
@@ -505,7 +509,7 @@ if(count($profile) >= 3 && ($profile[count($profile) - 1] != 'profile' || $profi
 		'USER_TITLE' => Output::getClean($query->user_title),
 		'FOLLOW' => $language->get('user', 'follow'),
 		'AVATAR' => $user->getAvatar($query->id, '../', 500),
-		'BANNER' => ((defined('CONFIG_PATH')) ? CONFIG_PATH : '/') . 'uploads/profile_images/' . (($query->banner) ? Output::getClean($query->banner) : 'profile.jpg'),
+		'BANNER' => ((defined('CONFIG_PATH')) ? CONFIG_PATH . '/' : '/') . 'uploads/profile_images/' . (($query->banner) ? Output::getClean($query->banner) : 'profile.jpg'),
 		'POST_ON_WALL' => str_replace('{x}', Output::getClean($query->nickname), $language->get('user', 'post_on_wall')),
 		'FEED' => $language->get('user', 'feed'),
 		'ABOUT' => $language->get('user', 'about'),

@@ -162,7 +162,7 @@ if(!isset($_GET['action']) && !isset($_GET['forum'])){
 									'forum_title' => Output::getClean(Input::get('forumname')),
 									'forum_description' => Output::getClean($description),
 									'forum_order' => $last_forum_order + 1,
-									'forum_type' => Input::get('forum_type'),
+									'forum_type' => Output::getClean(Input::get('forum_type')),
 									'icon' => Output::getClean(Input::get('forum_icon'))
 								));
 
@@ -569,7 +569,7 @@ if(!isset($_GET['action']) && !isset($_GET['forum'])){
 		die();
 	}
 
-	$available_forums = $queries->getWhere('forums', array('id', '<>', 0)); // Get a list of all forums which can be chosen as a parent
+	$available_forums = $queries->orderWhere('forums', 'id > 0', 'forum_order', 'ASC'); // Get a list of all forums which can be chosen as a parent
 	$groups = $queries->getWhere('groups', array('id', '<>', '0')); // Get a list of all groups
 
 	if(Input::exists()){
@@ -620,7 +620,9 @@ if(!isset($_GET['action']) && !isset($_GET['forum'])){
 							'news' => Input::get('display'),
 							'parent' => $parent,
 							'redirect_forum' => $redirect,
-							'icon' => Output::getClean(Input::get('icon'))
+							'icon' => Output::getClean(Input::get('icon')),
+							'forum_type' => Output::getClean(Input::get('forum_type')),
+							'topic_placeholder' => Input::get('topic_placeholder')
 						);
 
 						if(!isset($redirect_error))
@@ -816,6 +818,7 @@ if(!isset($_GET['action']) && !isset($_GET['forum'])){
 	$template_forums_array = array();
 	if(count($available_forums)){
 		foreach($available_forums as $item){
+			if($item->id == $forum[0]->id) continue;
 			$template_forums_array[] = array(
 				'id' => $item->id,
 				'title' => Output::getClean($item->forum_title)
@@ -834,6 +837,10 @@ if(!isset($_GET['action']) && !isset($_GET['forum'])){
 		'YES' => $language->get('general', 'yes'),
 		'NO' => $language->get('general', 'no'),
 		'CONFIRM_CANCEL' => $language->get('general', 'confirm_cancel'),
+		'FORUM_TYPE' => $forum_language->get('forum', 'forum_type'),
+		'FORUM_TYPE_FORUM' => $forum_language->get('forum', 'forum_type_forum'),
+		'FORUM_TYPE_CATEGORY' => $forum_language->get('forum', 'forum_type_category'),
+		'FORUM_TYPE_VALUE' => ($forum[0]->forum_type == 'category') ? 'category' : 'forum',
 		'FORUM_TITLE' => $forum_language->get('forum', 'forum_name'),
 		'FORUM_TITLE_VALUE' => Output::getClean(Output::getDecoded($forum[0]->forum_title)),
 		'FORUM_DESCRIPTION' => $forum_language->get('forum', 'forum_description'),
@@ -861,7 +868,9 @@ if(!isset($_GET['action']) && !isset($_GET['forum'])){
 		'CAN_CREATE_TOPIC' => $forum_language->get('forum', 'can_create_topic'),
 		'CAN_POST_REPLY' => $forum_language->get('forum', 'can_post_reply'),
 		'CAN_VIEW_OTHER_TOPICS' => $forum_language->get('forum', 'can_view_other_topics'),
-		'CAN_MODERATE_FORUM' => $forum_language->get('forum', 'can_moderate_forum')
+		'CAN_MODERATE_FORUM' => $forum_language->get('forum', 'can_moderate_forum'),
+		'TOPIC_PLACEHOLDER' => $forum_language->get('forum', 'topic_placeholder'),
+		'TOPIC_PLACEHOLDER_VALUE' => Output::getPurified($forum[0]->topic_placeholder)
 	));
 
 	$template_file = 'forum/forums_edit.tpl';

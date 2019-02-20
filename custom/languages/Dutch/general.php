@@ -63,6 +63,7 @@ $language = array(
 	'success' => 'Success',
 	'error' => 'Error',
 	'are_you_sure' => 'Are you sure?',
+	'spoiler' => 'Spoiler',
 
 	/*
 	 *  Contact formulier
@@ -122,6 +123,12 @@ $language = array(
     /*
      *  Widgets
      */
+    'statistics' => 'Statistics',
+    'users_registered' => 'Users Registered',
+    'latest_member' => 'Latest Member',
+    'forum_statistics' => 'Forum Statistics',
+    'total_threads' => 'Total Threads',
+    'total_posts' => 'Total Posts',
     'online_staff' => 'Online Personeel',
     'no_online_staff' => 'Er zijn geen personeelsleden online.',
     'online_users' => 'Online Gebruikers',
